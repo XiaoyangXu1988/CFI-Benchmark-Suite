@@ -15,6 +15,7 @@ int main()
 	// Activity to be timed
 	for (int i = 0; i < loop_count; i++)
 	{
+		// printf is a IAT function call.
 		printf("This is a message between start_time and end_time\n");
 	}
 
