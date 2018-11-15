@@ -4,28 +4,33 @@
 
 int loop_count = USHRT_MAX;
 
-LARGE_INTEGER time_in, time_out, frequency;
-__int64 totaltime = 0;
-double elapsed_microseconds = 0.0;
+LARGE_INTEGER start_time, end_time, elapsed_microseconds;
+LARGE_INTEGER frequency;
 
 int main()
 {	
-	// record starting time
-	QueryPerformanceCounter(&time_in);
+	QueryPerformanceFrequency(&frequency);
+	QueryPerformanceCounter(&start_time);
 
+	// Activity to be timed
 	for (int i = 0; i < loop_count; i++)
 	{
-		printf("This is a message between time_in and time_out\n");
+		printf("This is a message between start_time and end_time\n");
 	}
 
-	// record ending time, and calculate running time elapsed in the loop
-	QueryPerformanceCounter(&time_out);
-	QueryPerformanceFrequency(&frequency);
-	totaltime += time_out.QuadPart - time_in.QuadPart;
-	elapsed_microseconds = (double)totaltime * 1000000 / frequency.QuadPart;
+	QueryPerformanceCounter(&end_time);
+	elapsed_microseconds.QuadPart = end_time.QuadPart - start_time.QuadPart;
+	
+	// We now have the elapsed number of ticks, along with the
+	// number of ticks-per-second. We use these values
+	// to convert to the number of elapsed microseconds.
+	// To guard against loss-of-precision, we convert
+	// to microseconds *before* dividing by ticks-per-second.
+	elapsed_microseconds.QuadPart *= 1000000;
+	elapsed_microseconds.QuadPart /= frequency.QuadPart;
 
 	// print results
-	printf("total time in microseconds is %f\n", elapsed_microseconds);
+	printf("total time in microseconds is %I64d\n", elapsed_microseconds.QuadPart);
 
 	return 0;
 }
