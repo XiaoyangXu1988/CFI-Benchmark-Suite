@@ -1,7 +1,4 @@
-#include "pch.h"
-#include <iostream>
-#include <time.h> 
-#include <windows.h>
+#include "helper.h"
 
 /* Base class */
 class number
@@ -41,11 +38,9 @@ public:
 	}
 };
 
-int loop_count = USHRT_MAX;
-
-LARGE_INTEGER time_in, time_out, frequency;
-__int64 totaltime = 0;
-double elapsed_microseconds = 0.0;
+NANOSECOND start_time;
+NANOSECOND end_time;
+NANOSECOND total_time;
 
 // call virtual functions in an intensive loop
 int main()
@@ -59,9 +54,9 @@ int main()
 	// initialize random seed
 	srand((unsigned int)time(NULL));
 	// record starting time
-	QueryPerformanceCounter(&time_in);
+	start_time = get_wall_time();
 
-	for (int i = 0; i < USHRT_MAX; i++)
+	for (int i = 0; i < MAX_lOOP; i++)
 	{
 		n = pn->random();
 		if (pn->isOdd(n))
@@ -75,13 +70,11 @@ int main()
 	}
 
 	// record ending time, and calculate running time elapsed in the loop
-	QueryPerformanceCounter(&time_out);
-	QueryPerformanceFrequency(&frequency);
-	totaltime += time_out.QuadPart - time_in.QuadPart;
-	elapsed_microseconds = (double)totaltime * 1000000 / frequency.QuadPart;
+	end_time = get_wall_time();
+	total_time = end_time - start_time;
 	
 	// print results
-	printf("total time in microseconds is %f\n", elapsed_microseconds);
+	printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
 	printf("%d odd numbers\n", pn->count_odd);
 	printf("%d even numbers\n", pn->count_even);
 
