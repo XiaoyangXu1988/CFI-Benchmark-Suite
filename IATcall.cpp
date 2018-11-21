@@ -1,37 +1,36 @@
-#include "pch.h"
-#include <iostream>
-#include <windows.h>
+#include "helper.h"
 
-int loop_count = USHRT_MAX;
+static int count_even = 0;
+static int count_odd = 0;
 
-LARGE_INTEGER start_time, end_time, elapsed_microseconds;
-LARGE_INTEGER frequency;
+NANOSECOND start_time;
+NANOSECOND end_time;
+NANOSECOND total_time;
 
 int main()
-{	
-	QueryPerformanceFrequency(&frequency);
-	QueryPerformanceCounter(&start_time);
+{
+	// declare a function pointer, so that each call 
+	// via this pointer would be a indirect call
+	void(*fptr) (int n);
+
+	// initialize random seed
+	srand((unsigned int)time(NULL));
+	// record starting time
+	start_time = get_wall_time();
 
 	// Activity to be timed
-	for (int i = 0; i < loop_count; i++)
+	for (int i = 0; i < MAX_lOOP; i++)
 	{
 		// printf is a IAT function call.
 		printf("This is a message between start_time and end_time\n");
 	}
 
-	QueryPerformanceCounter(&end_time);
-	elapsed_microseconds.QuadPart = end_time.QuadPart - start_time.QuadPart;
-	
-	// We now have the elapsed number of ticks, along with the
-	// number of ticks-per-second. We use these values
-	// to convert to the number of elapsed microseconds.
-	// To guard against loss-of-precision, we convert
-	// to microseconds *before* dividing by ticks-per-second.
-	elapsed_microseconds.QuadPart *= 1000000;
-	elapsed_microseconds.QuadPart /= frequency.QuadPart;
+	// record ending time, and calculate running time elapsed in the loop
+	end_time = get_wall_time();
+	total_time = end_time - start_time;
 
 	// print results
-	printf("total time in microseconds is %I64d\n", elapsed_microseconds.QuadPart);
-
+	printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
+	//getchar();
 	return 0;
 }
