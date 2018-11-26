@@ -15,7 +15,12 @@ int main()
 
 	for (int i = 0; i < MAX_lOOP; i++)
 	{
+		#ifdef _WIN32
 		retFunc();
+		#elif __linux__
+		__asm__ ("call retFunc");
+		#else
+		#endif
 	}
 
 	// record ending time, and calculate running time elapsed in the loop
@@ -28,8 +33,18 @@ int main()
 	return 0;
 }
 
+#ifdef _WIN32
 __declspec(naked)
 void retFunc()
 {
 	__asm { ret }
 }
+#elif __linux__
+__asm__ (R"(
+.globl retFunc
+    .type retFunc, @function
+    retFunc:
+    ret
+)");
+#else
+#endif
