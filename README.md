@@ -5,3 +5,4 @@ The suite consists of a bunch of programs that are challenging for CFI/SFI deplo
 - [function pointers](./fptr.cpp)
 - [tail call](./tailcall.cpp)
 - [virtual function](./vtablecall.cpp)
+- [function pointer in PE header (win only)](./TLScallback.cpp)
