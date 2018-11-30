@@ -17,7 +17,7 @@
 //
 #endif
 
-#define MAX_lOOP INT_MAX
+#define MAX_LOOP INT_MAX
 #define NANOSECOND uint64_t
 #define BILLION 1000000000L
 
