@@ -8,6 +8,7 @@ typedef void(*INC)(int&);
 
 int main()
 {
+	int loop_count = 50;
 	HINSTANCE dllHandle = NULL;
 	INC pInc = NULL;
 	BOOL retFree = FALSE;
@@ -16,7 +17,7 @@ int main()
 	// record starting time
 	start_time = get_wall_time();	
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < loop_count; ++i)
 	{
 		// load an untrusted module lib.dll
 		dllHandle = LoadLibrary(L"lib.dll");
