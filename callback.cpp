@@ -22,7 +22,7 @@ int main()
 	start_time = get_wall_time();
 
 	// create threads and wait for them to terminate
-	for (int i = 0; i < MAX_lOOP; i++)
+	for (int i = 0; i < MAX_LOOP; i++)
 	{
 		h1 = CreateThread(NULL, 0, theadProc1, NULL, 0, NULL);
 		h2 = CreateThread(NULL, 0, theadProc2, NULL, 0, NULL);
