@@ -22,7 +22,7 @@ int main()
 	// record starting time
 	start_time = get_wall_time();
 
-	for (int i = 0; i < MAX_lOOP; i++)
+	for (int i = 0; i < MAX_LOOP; i++)
 	{
 		// depend on parity of randomized number, call
 		// different function using function pointer
