@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <Windows.h>
+#define EXPORTING_DLL
+#include "lib.h"
 
 BOOL APIENTRY DllMain(
 	HANDLE hModule,	   // Handle to DLL module 
@@ -27,7 +29,6 @@ BOOL APIENTRY DllMain(
 	return TRUE;
 }
 
-extern "C" __declspec(dllexport)
 void increment(int &i)
 {
 	if (i < INT_MAX)
@@ -37,3 +38,4 @@ void increment(int &i)
 	return;
 }
 
+int exp_null = NULL;
