@@ -1,30 +1,27 @@
-// This benchmark should be compiled using VC of versions 
-// prior to MSVC++ 14.0 (before VS2015). Since VS2015, 
-// there's no longer a library called msvcrxxx.dll, so that 
-// there's no __argc as an exported symbol(data).
 #include "helper.h"
+#include "lib.h"
 
 NANOSECOND start_time;
 NANOSECOND end_time;
 NANOSECOND total_time;
 const int loop_count = MAX_LOOP;
 
-static int arg_count;
-
 int main()
 {
+	int imp_null = -1;
+
 	// record starting time
 	start_time = get_wall_time();
 
 	for (int i = 0; i < loop_count; ++i)
 	{
-		// IAT move
-		arg_count = __argc;
+		// IAT data movement
+		imp_null = exp_null;
 
-		// if __argc is not 1, the enfoced CFI framework must have done something.
-		if (arg_count != 1)
+		// if imp_null is not NULL, the enfoced CFI framework must have done something.
+		if (imp_null != NULL)
 		{
-			printf("arg_count should be 1 (current value: %d).\n", arg_count);
+			printf("imp_null should be NULL (current value: %d).\n", imp_null);
 			exit(1);
 		}
 	}
