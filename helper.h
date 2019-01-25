@@ -9,10 +9,17 @@
 #elif __linux__
 #include <iostream>
 #include <time.h>
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdlib.h> 
 #include <limits.h>
 #include <stdint.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <fcntl.h>
+#include <dlfcn.h>
+#include <iostream>
+#include <sys/types.h>
+#include <pthread.h>
 #else
 //
 #endif
