@@ -12,11 +12,18 @@
 #include <stdio.h> 
 #include <limits.h>
 #include <stdint.h>
+#include <cstdlib>
+#include <dlfcn.h>
+#include <unistd.h>
+#include <sys/mman.h>
+#include <errno.h>
+#include <fcntl.h>
+#define FALSE false
 #else
 //
 #endif
 
-#define MAX_LOOP 1024
+#define MAX_LOOP 1048576
 #define NANOSECOND uint64_t
 #define BILLION 1000000000L
 
