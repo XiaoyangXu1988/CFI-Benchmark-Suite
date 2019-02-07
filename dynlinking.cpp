@@ -8,42 +8,58 @@ typedef void(*INC)(int&);
 
 int main()
 {
-	int loop_count = 50;
-	HINSTANCE dllHandle = NULL;
-	INC pInc = NULL;
+    #ifdef _WIN32
+	HINSTANCE libHandle = NULL;
 	BOOL retFree = FALSE;
+	#elif __linux__
+    void *libHandle;
+    char *error;
+    #endif
+	INC pInc = NULL;
 	int count = 0;
 
 	// record starting time
 	start_time = get_wall_time();	
 
-	for (int i = 0; i < loop_count; ++i)
+	for (int i = 0; i < MAX_LOOP; ++i)
 	{
-		// load an untrusted module lib.dll
-		dllHandle = LoadLibrary(L"lib.dll");
-		if (!dllHandle)
+		// load an untrusted module libinc.dll/.so
+		#ifdef _WIN32
+		libHandle = LoadLibrary(L"lib.dll");
+		#elif __linux__
+		libHandle = dlopen("./libinc.so", RTLD_LAZY);
+		#endif
+		if (!libHandle)
 		{
-			printf("LoadLibrary() failed.\n");
+			printf("Loading library failed.\n");
 			exit(1);
 		}
 
-		// get a function pointer exported by lib.dll
-		pInc = (INC)GetProcAddress(dllHandle, "increment");
+		// get a function pointer exported by libinc.dll/.so
+		#ifdef _WIN32
+		pInc = (INC)GetProcAddress(libHandle, "increment");
+		#elif __linux__
+		pInc = (INC) dlsym(libHandle, "increment");
+		#endif
 		if (!pInc)
 		{
-			printf("GetProcAddress() failed.\n");
+			printf("Finding symbol failed.\n");
 			exit(1);
 		}
 
 		pInc(count);
 
-		// unload lib.dll
-		retFree = FreeLibrary(dllHandle);
+		// unload libinc.dll/.so
+		#ifdef _WIN32
+		retFree = FreeLibrary(libHandle);
 		if (!retFree)
 		{
 			printf("FreeLibrary() failed.\n");
 			exit(1);
 		}
+        #elif __linux__
+		dlclose(libHandle);
+		#endif
 	}
 
 	// record ending time

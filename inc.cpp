@@ -1,7 +1,9 @@
 #include <stdio.h>
+#include "inc.h"
+
+#ifdef _WIN32
 #include <Windows.h>
 #define EXPORTING_DLL
-#include "lib.h"
 
 BOOL APIENTRY DllMain(
 	HANDLE hModule,	   // Handle to DLL module 
@@ -29,6 +31,12 @@ BOOL APIENTRY DllMain(
 	return TRUE;
 }
 
+int exp_null = NULL;
+#elif __linux__
+#include <limits.h>
+#include "helper.h"
+#endif
+
 void increment(int &i)
 {
 	if (i < INT_MAX)
@@ -37,5 +45,3 @@ void increment(int &i)
 	}
 	return;
 }
-
-int exp_null = NULL;
