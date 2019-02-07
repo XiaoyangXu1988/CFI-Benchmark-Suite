@@ -1,8 +1,8 @@
 #include "helper.h"
 
-void JITCallback();
+void JITCALLBACKPTR();
 
-typedef void (*CALLBACK)();
+typedef void (*CALLBACKPTR)();
 //typedef void(*INC)(int&);
 
 BYTE JIT_code[] = { 
@@ -66,15 +66,15 @@ int main()
 	}
 
 	// patch JIT_code
-	CALLBACK pJITcallback = &JITCallback;
-	void *ppJITcallback = &pJITcallback;
-	memcpy(&(JIT_code[8]), &ppJITcallback, sizeof(pJITcallback));
+	CALLBACKPTR pJITCALLBACKPTR = &JITCALLBACKPTR;
+	void *ppJITCALLBACKPTR = &pJITCALLBACKPTR;
+	memcpy(&(JIT_code[8]), &ppJITCALLBACKPTR, sizeof(pJITCALLBACKPTR));
 
 	// copy JIT_code to pJIT
 	memcpy(pJIT, JIT_code, sizeof(JIT_code));
 
 	// call pJIT
-	((CALLBACK) pJIT)();
+	((CALLBACKPTR) pJIT)();
 
 	// free the page allocated
 	#ifdef _WIN32
@@ -94,7 +94,7 @@ int main()
 #ifdef _WIN32
 __declspec(naked)
 #endif
-void JITCallback()
+void JITCALLBACKPTR()
 {
-	printf("This is a message in JITCallback()\n");
+	printf("This is a message in JITCALLBACKPTR()\n");
 }
