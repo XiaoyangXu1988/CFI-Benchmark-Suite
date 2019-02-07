@@ -3,7 +3,6 @@
 NANOSECOND start_time;
 NANOSECOND end_time;
 NANOSECOND total_time;
-const int loop_count = 10000L;
 
 int main()
 {
@@ -13,11 +12,10 @@ int main()
     
 	// record starting time
 	start_time = get_wall_time();	
+    page_size = getpagesize();
 
-	for (int i = 0; i < loop_count; ++i)
+	for (int i = 0; i < MAX_LOOP; ++i)
 	{
-        
-        page_size = getpagesize();
         fd = open ("/dev/zero", O_RDONLY);
         p = (char *) mmap (NULL, page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
         close (fd);

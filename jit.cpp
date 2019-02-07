@@ -2,6 +2,9 @@
 
 void JITCallback();
 
+typedef void (*CALLBACK)();
+//typedef void(*INC)(int&);
+
 BYTE JIT_code[] = { 
 	// prologue
 	0x55,			// push ebp
@@ -21,6 +24,7 @@ BYTE JIT_code[] = {
 	// epilogue
 	0x5F,			// pop edi
 	0x5E,			// pop esi
+	0x5b,           // pop ebx
 	0x8B, 0xE5,		// mov esp, ebp
 	0x5D,			// pop ebp
 	0xC3			// retn
@@ -28,25 +32,41 @@ BYTE JIT_code[] = {
 
 int main()
 {
+
+	#ifdef _WIN32	   	 	
 	SYSTEM_INFO info;
 	DWORD dwPageSize;
 	FARPROC pJIT;
 	BOOL retVF;
-	   	 	
+	
 	// get page size of current system
 	GetSystemInfo(&info);
 	dwPageSize = info.dwPageSize;
+	
+	// allocate a page of memory (RWX)
+    pJIT = (FARPROC)VirtualAlloc(NULL, dwPageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+
+    #elif __linux__    
+    uint8_t *pJIT;
+    int page_size;
+    int fd;
+    
+    page_size = getpagesize();
 
 	// allocate a page of memory (RWX)
-	pJIT = (FARPROC)VirtualAlloc(NULL, dwPageSize, MEM_COMMIT | MEM_RESERVE, PAGE_EXECUTE_READWRITE);
+	
+	fd = open ("/dev/zero", O_RDONLY);
+	pJIT = (uint8_t *) mmap (NULL, page_size, PROT_READ | PROT_WRITE | PROT_EXEC , MAP_PRIVATE, fd, 0);
+	#endif
+	
 	if (!pJIT)
 	{
-		printf("VirtualAlloc() failed allocating pJIT");
+		printf("Memory allocation failed for pJIT");
 		exit(1);
 	}
 
 	// patch JIT_code
-	void *pJITcallback = &JITCallback;
+	CALLBACK pJITcallback = &JITCallback;
 	void *ppJITcallback = &pJITcallback;
 	memcpy(&(JIT_code[8]), &ppJITcallback, sizeof(pJITcallback));
 
@@ -54,39 +74,27 @@ int main()
 	memcpy(pJIT, JIT_code, sizeof(JIT_code));
 
 	// call pJIT
-	pJIT();
+	((CALLBACK) pJIT)();
 
 	// free the page allocated
+	#ifdef _WIN32
 	retVF = VirtualFree(pJIT, 0, MEM_RELEASE);
 	if (!retVF)
 	{
 		printf("VirtualFree() failed freeing pJIT");
 		exit(1);
 	}
+	#elif __linux__
+	munmap(pJIT, page_size);
+	#endif
 	
 	return 0;
 }
 
+#ifdef _WIN32
 __declspec(naked)
+#endif
 void JITCallback()
 {
-	// prologue
-	__asm {
-		push ebp
-		mov ebp, esp
-		push ebx
-		push esi
-		push edi
-	}
-
 	printf("This is a message in JITCallback()\n");
-
-	// epilogue
-	__asm {
-		pop edi
-		pop esi
-		mov esp, ebp
-		pop ebp
-		ret
-	}
 }
