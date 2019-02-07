@@ -10,4 +10,5 @@ extern "C" __declspec(dllimport) int exp_null;
 #endif
 #elif __linux__
 extern "C" void increment(int &i);
+extern "C" int exp_null;
 #endif

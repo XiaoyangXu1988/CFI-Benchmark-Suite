@@ -1,10 +1,9 @@
 #include "helper.h"
-#include "lib.h"
+#include "inc.h"
 
 NANOSECOND start_time;
 NANOSECOND end_time;
 NANOSECOND total_time;
-const int loop_count = MAX_LOOP;
 
 int main()
 {
@@ -13,13 +12,13 @@ int main()
 	// record starting time
 	start_time = get_wall_time();
 
-	for (int i = 0; i < loop_count; ++i)
+	for (int i = 0; i < MAX_LOOP; ++i)
 	{
 		// IAT data movement
-		imp_null = exp_null;
+		imp_null = (int) exp_null;
 
 		// if imp_null is not NULL, the enfoced CFI framework must have done something.
-		if (imp_null != NULL)
+		if (imp_null != 0)
 		{
 			printf("imp_null should be NULL (current value: %d).\n", imp_null);
 			exit(1);

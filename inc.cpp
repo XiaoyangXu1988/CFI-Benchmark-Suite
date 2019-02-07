@@ -31,7 +31,6 @@ BOOL APIENTRY DllMain(
 	return TRUE;
 }
 
-int exp_null = NULL;
 #elif __linux__
 #include <limits.h>
 #include "helper.h"
@@ -45,3 +44,5 @@ void increment(int &i)
 	}
 	return;
 }
+
+int exp_null = (int) NULL;
