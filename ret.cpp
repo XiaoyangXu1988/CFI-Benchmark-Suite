@@ -40,11 +40,10 @@ void retFunc()
 	__asm { ret }
 }
 #elif __linux__
-__asm__ (R"(
-.globl retFunc
-    .type retFunc, @function
-    retFunc:
-    ret
-)");
+__asm__ (
+".globl retFunc\n"
+"    .type retFunc, @function\n"
+"    retFunc:\n"
+"    ret\n");
 #else
 #endif
