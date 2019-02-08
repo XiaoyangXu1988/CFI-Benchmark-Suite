@@ -6,12 +6,12 @@ CXX ?= g++
 
 TARGETDIR ?= $(PWD)/bin
 
-all: calling_conventions cppEH dynlinking fptr indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall
+all: $(TARGETDIR) calling_conventions cppEH dynlinking fptr indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall
 
 #linux-multithreading
 
 calling_conventions: calling_conventions.cpp helper.cpp helper.h
-	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/calling_conventions calling_conventions.cpp helper.cpp
+	$(CXX) $(CXXFLAGS) -m32 -o $(TARGETDIR)/calling_conventions calling_conventions.cpp helper.cpp
 	
 cppEH: cppEH.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/cppEH cppEH.cpp helper.cpp
@@ -49,5 +49,8 @@ ret: ret.cpp helper.cpp helper.h
 switch: switch.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/switch switch.cpp helper.cpp
 	
-vtablecall: vtablecall.cpp helper.cpp helper.h -std
-	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/vtablecall vtablecall.cpp helper.cpp
+vtablecall: vtablecall.cpp helper.cpp helper.h
+	$(CXX) $(CXXFLAGS) -std=c++11 -o $(TARGETDIR)/vtablecall vtablecall.cpp helper.cpp
+	
+$(TARGETDIR)/:
+	mkdir -p $@
