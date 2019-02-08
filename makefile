@@ -54,7 +54,6 @@ vtablecall: vtablecall.cpp helper.cpp helper.h
 
 libinc.so: inc.o inc.h
 	$(CXX) $(CXXFLAGS) -shared -o $(TARGETDIR)/libinc.so $(TARGETDIR)/inc.o
-	cp $(TARGETDIR)/libinc.so .
 	
 inc.o: inc.cpp inc.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/inc.o -c -fpic inc.cpp
