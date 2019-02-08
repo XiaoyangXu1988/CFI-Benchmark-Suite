@@ -1,3 +1,5 @@
-llvm-compiled/
-mcfi-compiled/
+*/*
+*.o
+*.so
+*.dll
 

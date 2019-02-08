@@ -38,7 +38,8 @@ extern NANOSECOND get_wall_time();
 #define THISCALL __thiscall
 #elif __linux__
 #define CDECL __attribute__((cdecl))
-#define STDCALL __attribute__((stdcall))
+//#define STDCALL __attribute__((stdcall))
+#define STDCALL
 #define FASTCALL __attribute__((fastcall))
 #define THISCALL __attribute__((thiscall))
 #else
