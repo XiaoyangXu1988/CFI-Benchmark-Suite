@@ -19,6 +19,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdarg.h>
 #define FALSE false
 #define BYTE unsigned char
 #else
