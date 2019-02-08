@@ -53,12 +53,11 @@ vtablecall: vtablecall.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -std=c++11 -o $(TARGETDIR)/vtablecall vtablecall.cpp helper.cpp
 
 libinc.so: inc.o inc.h
-	$(CXX) $(CXXFLAGS) -shared -o $(TARGETDIR)/libinc.so inc.o
+	$(CXX) $(CXXFLAGS) -shared -o $(TARGETDIR)/libinc.so $(TARGETDIR)/inc.o
 	cp $(TARGETDIR)/libinc.so .
-	rm inc.o
 	
 inc.o: inc.cpp inc.h
-	$(CXX) $(CXXFLAGS) -c -fpic inc.cpp
+	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/inc.o -c -fpic inc.cpp
 
 $(TARGETDIR)/:
 	mkdir -p $@
