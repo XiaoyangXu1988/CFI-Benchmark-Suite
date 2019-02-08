@@ -16,7 +16,7 @@ calling_conventions: calling_conventions.cpp helper.cpp helper.h
 cppEH: cppEH.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/cppEH cppEH.cpp helper.cpp
 	
-dynlinking: dynlinking.cpp helper.cpp helper.h
+dynlinking: dynlinking.cpp helper.cpp helper.h libinc.so
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/dynlinking dynlinking.cpp helper.cpp -ldl
 	
 fptr: fptr.cpp helper.cpp helper.h
@@ -51,6 +51,12 @@ switch: switch.cpp helper.cpp helper.h
 	
 vtablecall: vtablecall.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -std=c++11 -o $(TARGETDIR)/vtablecall vtablecall.cpp helper.cpp
+
+libinc.so: inc.o inc.h
+	$(CXX) $(CXXFLAGS) -shared -o $(TARGETDIR)/libinc.so inc.o
 	
+inc.o: inc.cpp inc.h
+	$(CXX) $(CXXFLAGS) -c -fpic inc.cpp
+
 $(TARGETDIR)/:
 	mkdir -p $@
