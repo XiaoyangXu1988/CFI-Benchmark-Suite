@@ -8,14 +8,13 @@ NANOSECOND total_time;
 
 static int main_catch_count = 0;
 static int throwInt_catch_count = 0;
-const static int loop_count = 10000L;
 
 int main()
 {
 	// record starting time
 	start_time = get_wall_time();
 
-	for (int i = 0; i < loop_count; ++i)
+	for (int i = 0; i < MAX_LOOP; ++i)
 	{
 		try
 		{

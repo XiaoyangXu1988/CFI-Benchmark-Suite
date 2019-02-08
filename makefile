@@ -4,7 +4,7 @@ CXX ?= g++
 # uncomment the next line or set CXXFLAGS if you want to set particular compilation flag
 #CXXFLAGS ?= -m32
 
-TARGETDIR ?= $(PWD)/bin
+TARGETDIR ?= $(PWD)/gpp
 
 all: $(TARGETDIR) calling_conventions cppEH dynlinking fptr indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall
 
