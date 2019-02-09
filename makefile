@@ -4,9 +4,9 @@ CXX ?= g++
 # uncomment the next line or set CXXFLAGS if you want to set particular compilation flag
 #CXXFLAGS ?= -m32
 
-TARGETDIR ?= $(PWD)/gpp
+TARGETDIR ?= gpp
 
-all: $(TARGETDIR) cppEH dynlinking fptr indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall
+all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall
 
 #calling_conventions
 #linux-multithreading
@@ -24,8 +24,8 @@ dynlinking: dynlinking.cpp helper.cpp helper.h libinc.so
 fptr: fptr.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/fptr fptr.cpp helper.cpp
 	
-impExpData: impExpData.cpp helper.cpp helper.h
-	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/impExpData impExpData.cpp helper.cpp
+impExpData: impExpData.cpp helper.cpp helper.h libinc.so
+	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/impExpData impExpData.cpp helper.cpp -linc -L$(PWD)/$(TARGETDIR)
 	
 indirect-tailcall: indirect-tailcall.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/indirect-tailcall indirect-tailcall.cpp helper.cpp
