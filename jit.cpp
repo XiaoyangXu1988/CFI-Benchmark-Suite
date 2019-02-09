@@ -7,26 +7,33 @@ typedef void (*CALLBACKPTR)();
 
 BYTE JIT_code[] = { 
 	// prologue
-	0x55,			// push ebp
-	0x8B, 0xEC,		// mov ebp, esp
-	0x53,			// push ebx
-	0x56,			// push esi
-	0x57,			// push edi
+	0x55,			// push ebp/rbp
+	0x48,           // dec  eax if compiled for 32bit otherwise extend ebp and esp to rbp and rsp for next ins
+	0x8B, 0xEC,		// mov  ebp, esp
+	0x53,			// push ebx/rbx
+	0x56,			// push esi/rsi
+	0x57,			// push edi/rdi
 
-	// call a function in the untrusted module
-	0xFF,			
-	0x15,			// call ds:[]
+	// computed call to a function in the untrusted module
+	0x48,           // dec  eax if compiled for 32bit otherwise extend ebx to rbx for next ins
+	0xbb,			// mov  ebx, 0x00000000
 	0x00,
 	0x00,
 	0x00,
-	0x00,			// 4 bytes of address need to be patched
+	0x00,
+	0x90,
+	0x90,
+	0x90,
+	0x90,			// 8 bytes of address need to be patched -- NOP is added so that it works for both 32-bit and 64-bit machine
+	0xff, 0x13,     // call ptr [ebx/rbx]
 
 	// epilogue
-	0x5F,			// pop edi
-	0x5E,			// pop esi
-	0x5b,           // pop ebx
+	0x5F,			// pop edi/rdi
+	0x5E,			// pop esi/rsi
+	0x5b,           // pop ebx/rbx
+	0x48,           // dec  eax if compiled for 32bit otherwise extend ebp and esp to rbp and rsp for next ins
 	0x8B, 0xE5,		// mov esp, ebp
-	0x5D,			// pop ebp
+	0x5D,			// pop ebp/rbp
 	0xC3			// retn
 };
 
@@ -68,7 +75,7 @@ int main()
 	// patch JIT_code
 	CALLBACKPTR pJITCALLBACKPTR = &JITCALLBACKPTR;
 	void *ppJITCALLBACKPTR = &pJITCALLBACKPTR;
-	memcpy(&(JIT_code[8]), &ppJITCALLBACKPTR, sizeof(pJITCALLBACKPTR));
+	memcpy(&(JIT_code[9]), &ppJITCALLBACKPTR, sizeof(pJITCALLBACKPTR));
 
 	// copy JIT_code to pJIT
 	memcpy(pJIT, JIT_code, sizeof(JIT_code));
@@ -91,9 +98,6 @@ int main()
 	return 0;
 }
 
-#ifdef _WIN32
-__declspec(naked)
-#endif
 void JITCALLBACKPTR()
 {
 	printf("This is a message in JITCALLBACKPTR()\n");
