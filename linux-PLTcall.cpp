@@ -14,7 +14,7 @@ int main()
 	start_time = get_wall_time();	
     page_size = getpagesize();
 
-	for (int i = 0; i < MAX_LOOP; ++i)
+	for (long long int i = 0; i < MAX_LOOP * LPLTTS; ++i)
 	{
         fd = open ("/dev/zero", O_RDONLY);
         p = (char *) mmap (NULL, page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);

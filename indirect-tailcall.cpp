@@ -21,7 +21,7 @@ int main()
     srand((unsigned int)time(NULL));
     start_time = get_wall_time();
 
-    for (int i = 0; i < MAX_LOOP; i++)
+    for (long long int i = 0; i < MAX_LOOP * INDCTS; i++)
     {
         helper();
     }

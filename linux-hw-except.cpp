@@ -26,9 +26,9 @@ int main(void) {
     sigaction(SIGSEGV, &myhandle, NULL);
 
     start_time = get_wall_time();
-    int i = 0;
+    long long int i = 0;
     sigsetjmp(mark, 0);
-    if (i++ < MAX_LOOP)
+    if (i++ < MAX_LOOP * LHWXTS)
         exception_loop();
     end_time = get_wall_time();
     total_time = end_time - start_time;

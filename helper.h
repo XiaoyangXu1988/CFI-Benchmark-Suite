@@ -26,7 +26,20 @@
 //
 #endif
 
-#define MAX_LOOP 1048576
+#define MAX_LOOP 1048576L
+#define CPEHTS 5
+#define DYNLTS 0.3
+#define FPTRTS 500
+#define IMPDTS 6500
+#define INDCTS 360
+#define JITCTS 2500
+#define LCALTS 0.4
+#define LHWXTS 20
+#define LPLTTS 1.2
+#define  RETTS 5700
+#define SWTCTS 590
+#define VTABTS 460
+
 #define NANOSECOND uint64_t
 #define BILLION 1000000000L
 

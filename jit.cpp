@@ -37,6 +37,12 @@ BYTE JIT_code[] = {
 	0xC3			// retn
 };
 
+NANOSECOND start_time;
+NANOSECOND end_time;
+NANOSECOND total_time;
+
+long long int flag = 0;
+
 int main()
 {
 
@@ -80,8 +86,18 @@ int main()
 	// copy JIT_code to pJIT
 	memcpy(pJIT, JIT_code, sizeof(JIT_code));
 
-	// call pJIT
-	((CALLBACKPTR) pJIT)();
+	// record starting time
+	start_time = get_wall_time();
+
+    // call pJIT several times to see the overhead of guarding it if any
+    for (; flag < MAX_LOOP * JITCTS; flag++)
+	    ((CALLBACKPTR) pJIT)();
+	
+	// record ending time, and calculate running time elapsed in the loop
+	end_time = get_wall_time();
+	total_time = end_time - start_time;
+	
+	printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
 
 	// free the page allocated
 	#ifdef _WIN32
@@ -100,5 +116,6 @@ int main()
 
 void JITCALLBACKPTR()
 {
-	printf("This is a message in JITCALLBACKPTR()\n");
+    if(!flag)
+    	printf("This is a message in JITCALLBACKPTR()\n");
 }

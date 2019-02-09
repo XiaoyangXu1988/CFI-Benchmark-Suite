@@ -19,7 +19,7 @@ int main()
 	start_time = get_wall_time();
 
 	// create threads and wait for them to terminate
-	for (int i = 0; i < MAX_LOOP; i++)
+	for (long long int i = 0; i < MAX_LOOP * LCALTS; i++)
 	{
         pthread_create(&threads[0], NULL, &theadProc0, NULL);
         pthread_create(&threads[1], NULL, &theadProc1, NULL);
