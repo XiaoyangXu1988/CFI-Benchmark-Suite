@@ -60,5 +60,5 @@ libinc.so: inc.o inc.h
 inc.o: inc.cpp inc.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/inc.o -c -fpic inc.cpp
 
-$(TARGETDIR)/:
+$(TARGETDIR):
 	mkdir -p $@
