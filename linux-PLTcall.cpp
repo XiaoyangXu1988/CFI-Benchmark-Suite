@@ -10,12 +10,12 @@ int main()
     int page_size;
     int fd;
     
-	// record starting time
-	start_time = get_wall_time();	
+    // record starting time
+    start_time = get_wall_time();    
     page_size = getpagesize();
 
-	for (long long int i = 0; i < MAX_LOOP * LPLTTS; ++i)
-	{
+    for (long long int i = 0; i < MAX_LOOP * LPLTTS; ++i)
+    {
         fd = open ("/dev/zero", O_RDONLY);
         p = (char *) mmap (NULL, page_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
         close (fd);
@@ -33,13 +33,13 @@ int main()
         }
         
         munmap(p, page_size);
-	}
+    }
 
-	// record ending time
-	end_time = get_wall_time();
-	total_time = end_time - start_time;
+    // record ending time
+    end_time = get_wall_time();
+    total_time = end_time - start_time;
 
-	// print results
-	printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
-	return 0;
+    // print results
+    printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
+    return 0;
 }

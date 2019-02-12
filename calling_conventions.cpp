@@ -15,108 +15,108 @@ int FASTCALL fastSum(int count, const int * list);
 class CMath
 {
 private:
-	int * list;
-	int count;
+    int * list;
+    int count;
 public:
-	int THISCALL calculateSum();
-	int THISCALL calculateAverage();
-	void THISCALL setList(const int list_count, const int * int_list);
+    int THISCALL calculateSum();
+    int THISCALL calculateAverage();
+    void THISCALL setList(const int list_count, const int * int_list);
 };
 
 int main()
 {
-	// call a CDECL function
-	int variadicSum_ans = 0;
+    // call a CDECL function
+    int variadicSum_ans = 0;
 
-	variadicSum_ans = variadicSum(5, 1, 2, 3, 4, 5);
-	printf("variadicSum: sum is %d\n", variadicSum_ans);
+    variadicSum_ans = variadicSum(5, 1, 2, 3, 4, 5);
+    printf("variadicSum: sum is %d\n", variadicSum_ans);
 
-	// call a STDCALL function
-	int listSum_ans = 0;
-	int int_list1[5] = { 1, 3, 5, 7, 9 };
+    // call a STDCALL function
+    int listSum_ans = 0;
+    int int_list1[5] = { 1, 3, 5, 7, 9 };
 
-	listSum_ans = listSum(sizeof(int_list1) / sizeof(int), int_list1);
-	printf("listSum: sum is %d\n", listSum_ans);
+    listSum_ans = listSum(sizeof(int_list1) / sizeof(int), int_list1);
+    printf("listSum: sum is %d\n", listSum_ans);
 
-	// call a FASTCALL function
-	int fastSum_ans = 0;
-	int int_list2[4] = { 5, 3, 5, 1 };
+    // call a FASTCALL function
+    int fastSum_ans = 0;
+    int int_list2[4] = { 5, 3, 5, 1 };
 
-	fastSum_ans = fastSum(sizeof(int_list2) / sizeof(int), int_list2);
-	printf("fastSum: sum is %d\n", fastSum_ans);
+    fastSum_ans = fastSum(sizeof(int_list2) / sizeof(int), int_list2);
+    printf("fastSum: sum is %d\n", fastSum_ans);
 
-	// call THISCALL functions
-	CMath * myCMath = new CMath;
-	int int_list3[6] = { 2, 1, 6, 3, 8, 9 };
+    // call THISCALL functions
+    CMath * myCMath = new CMath;
+    int int_list3[6] = { 2, 1, 6, 3, 8, 9 };
 
-	myCMath->setList(sizeof(int_list3) / sizeof(int), int_list3);
-	int sum = myCMath->calculateSum();
-	int avg = myCMath->calculateAverage();
-	printf("calculateSum: sum is %d\n", sum);
-	printf("calculateAverage: sum is %d\n", avg);
+    myCMath->setList(sizeof(int_list3) / sizeof(int), int_list3);
+    int sum = myCMath->calculateSum();
+    int avg = myCMath->calculateAverage();
+    printf("calculateSum: sum is %d\n", sum);
+    printf("calculateAverage: sum is %d\n", avg);
 
-	return 0;
+    return 0;
 }
 
 int THISCALL CMath::calculateAverage()
 {
-	int sum = 0;
-	int avg = 0;
+    int sum = 0;
+    int avg = 0;
 
-	sum = this->calculateSum();
-	avg = sum / this->count;
-	return avg;
+    sum = this->calculateSum();
+    avg = sum / this->count;
+    return avg;
 }
 
 int THISCALL CMath::calculateSum()
 {
-	int sum = 0;
-	for (int i = 0; i < this->count; i++)
-		sum += (this->list)[i];
+    int sum = 0;
+    for (int i = 0; i < this->count; i++)
+        sum += (this->list)[i];
 
-	return sum;
+    return sum;
 }
 
 void THISCALL CMath::setList(const int list_count, const int * int_list)
 {
-	this->list = new int[list_count];
-	this->count = list_count;
+    this->list = new int[list_count];
+    this->count = list_count;
 
-	for (int i = 0; i < list_count; i++)
-		(this->list)[i] = int_list[i];
+    for (int i = 0; i < list_count; i++)
+        (this->list)[i] = int_list[i];
 }
 
 int FASTCALL fastSum(int count, const int * list)
 {
-	int sum = 0;
-	int i = 0;
+    int sum = 0;
+    int i = 0;
 
-	for (int i = 0; i < count; i++)
-		sum += list[i];
+    for (int i = 0; i < count; i++)
+        sum += list[i];
 
-	return sum;
+    return sum;
 }
 
 int STDCALL listSum(int count, const int * list)
 {
-	int sum = 0;
-	int i = 0;
+    int sum = 0;
+    int i = 0;
 
-	for (int i = 0; i < count; i++)
-		sum += list[i];
+    for (int i = 0; i < count; i++)
+        sum += list[i];
 
-	return sum;
+    return sum;
 }
 
 int CDECL variadicSum(int count, ...)
 {
-	va_list ap;
-	int sum = 0;
+    va_list ap;
+    int sum = 0;
 
-	va_start(ap, count);
-	for (int i = 0; i < count; i++)
-		sum += va_arg(ap, int);
-	va_end(ap);
+    va_start(ap, count);
+    for (int i = 0; i < count; i++)
+        sum += va_arg(ap, int);
+    va_end(ap);
 
-	return sum;
+    return sum;
 }

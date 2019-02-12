@@ -13,46 +13,46 @@ void printOdd(int n);
 
 int main()
 {
-	// declare a function pointer, so that each call 
-	// via this pointer would be a indirect call
-	void(*fptr) (int n);
+    // declare a function pointer, so that each call 
+    // via this pointer would be a indirect call
+    void(*fptr) (int n);
 
-	// initialize random seed
-	srand((unsigned int)time(NULL));
-	// record starting time
-	start_time = get_wall_time();
+    // initialize random seed
+    srand((unsigned int)time(NULL));
+    // record starting time
+    start_time = get_wall_time();
 
-	for (long long int i = 0; i < MAX_LOOP * FPTRTS; i++)
-	{
-		// depend on parity of randomized number, call
-		// different function using function pointer
-		int r = rand();
-		if (r % 2 == 0)
-			fptr = printEven;
-		else
-			fptr = printOdd;
-		fptr(r);
-	}
+    for (long long int i = 0; i < MAX_LOOP * FPTRTS; i++)
+    {
+        // depend on parity of randomized number, call
+        // different function using function pointer
+        int r = rand();
+        if (r % 2 == 0)
+            fptr = printEven;
+        else
+            fptr = printOdd;
+        fptr(r);
+    }
 
-	// record ending time, and calculate running time elapsed in the loop
-	end_time = get_wall_time();
-	total_time = end_time - start_time;
+    // record ending time, and calculate running time elapsed in the loop
+    end_time = get_wall_time();
+    total_time = end_time - start_time;
 
-	// print results
-	printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
+    // print results
+    printf("total time in nanoseconds is %llu\n", (long long unsigned int) total_time);
 
-	printf("%d odd numbers\n", count_odd);
-	printf("%d even numbers\n", count_even);
+    printf("%d odd numbers\n", count_odd);
+    printf("%d even numbers\n", count_even);
 
-	return 0;
+    return 0;
 }
 
 void printEven(int n)
 {
-	count_even++;
+    count_even++;
 }
 
 void printOdd(int n)
 {
-	count_odd++;
+    count_odd++;
 }
