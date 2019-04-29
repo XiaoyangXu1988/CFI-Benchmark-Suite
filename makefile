@@ -6,7 +6,7 @@ CXX ?= g++
 
 TARGETDIR ?= gpp
 
-all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except linux-PLTcall ret switch vtablecall #calling_conventions linux-multithreading
+all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except linux-multithreading linux-PLTcall ret switch vtablecall #calling_conventions
 
 calling_conventions: calling_conventions.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -m32 -o $(TARGETDIR)/calling_conventions calling_conventions.cpp helper.cpp
