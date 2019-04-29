@@ -4,9 +4,15 @@ CXX ?= g++
 # uncomment the next line or set CXXFLAGS if you want to set particular compilation flag
 #CXXFLAGS ?= -m32
 
-TARGETDIR ?= gpp
+TARGETDIR ?= $(CXX)
 
-all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except linux-multithreading linux-PLTcall ret switch vtablecall #calling_conventions
+MULTITHREADING=linux64-multithreading
+
+ifneq (,$(findstring -m32,$(CXXFLAGS)))
+	MULTITHREADING=linux32-multithreading
+endif
+
+all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except $(MULTITHREADING) linux-PLTcall ret switch vtablecall #calling_conventions
 
 calling_conventions: calling_conventions.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -m32 -o $(TARGETDIR)/calling_conventions calling_conventions.cpp helper.cpp
@@ -35,9 +41,12 @@ linux-callback: linux-callback.cpp helper.cpp helper.h
 linux-hw-except: linux-hw-except.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-hw-except linux-hw-except.cpp helper.cpp
 	
-linux-multithreading: linux-multithreading.cpp helper.cpp helper.h
-	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-multithreading linux-multithreading.cpp helper.cpp -lpthread
-	
+linux32-multithreading: linux32-multithreading.cpp helper.cpp helper.h
+	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-multithreading linux32-multithreading.cpp helper.cpp -lpthread
+
+linux64-multithreading: linux64-multithreading.cpp helper.cpp helper.h
+	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-multithreading linux64-multithreading.cpp helper.cpp -lpthread
+
 linux-PLTcall: linux-PLTcall.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-PLTcall linux-PLTcall.cpp helper.cpp
 	

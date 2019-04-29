@@ -26,7 +26,8 @@
 //
 #endif
 
-#define MAX_LOOP 1048576L
+//#define MAX_LOOP 1048576L
+#define MAX_LOOP 1024L
 #define CPEHTS 5
 #define DYNLTS 0.3
 #define FPTRTS 500
