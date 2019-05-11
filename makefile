@@ -12,7 +12,7 @@ ifneq (,$(findstring -m32,$(CXXFLAGS)))
 	MULTITHREADING=linux32-multithreading
 endif
 
-all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except $(MULTITHREADING) linux-PLTcall ret switch vtablecall #calling_conventions
+all: $(TARGETDIR) cppEH dynlinking fptr impExpData indirect-tailcall jit linux-callback linux-hw-except $(MULTITHREADING) linux-PLTcall mismatching ret switch vtablecall #calling_conventions
 
 calling_conventions: calling_conventions.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -m32 -o $(TARGETDIR)/calling_conventions calling_conventions.cpp helper.cpp
@@ -50,6 +50,9 @@ linux64-multithreading: linux64-multithreading.cpp helper.cpp helper.h
 linux-PLTcall: linux-PLTcall.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/linux-PLTcall linux-PLTcall.cpp helper.cpp
 	
+mismatching: mismatching.cpp helper.cpp helper.h	
+	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/mismatching mismatching.cpp helper.cpp
+
 ret: ret.cpp helper.cpp helper.h
 	$(CXX) $(CXXFLAGS) -o $(TARGETDIR)/ret ret.cpp helper.cpp
 	
